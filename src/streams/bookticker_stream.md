@@ -1,38 +1,38 @@
 *Algoritmo:*
 
-En este archivo se define la función llamada start_bookticker_stream() la cual recibe como parámetro una variable llamada event_queue. El propósito de esta función es suscribirse al WebSocket bookticker del activo configurado, escuchar mensajes en bucle continuo, limpiar y validar el payload entrante para extraer únicamente el new_best_bid, y construir el evento PriceUpdate(new_best_bid) para enviarlo a la cola compartida del worker. Si el mensaje llega vacío, inválido o sin best bid, se ignora y el stream continúa sin interrumpirse.
+En este archivo se define la función llamada startBooktickerStream() la cual recibe como parámetro una variable llamada eventQueue. El propósito de esta función es suscribirse al WebSocket bookticker del activo configurado, escuchar mensajes en bucle continuo, limpiar y validar el payload entrante para extraer únicamente el newBestBid, y construir el evento priceUpdate(newBestBid) para enviarlo a la cola compartida del worker. Si el mensaje llega vacío, inválido o sin best bid, se ignora y el stream continúa sin interrumpirse.
 
 
 -------------------------------------------------------------------------------
-* Import get_asset_symbol()        from   state/asset.rs
-* Import PriceUpdate()             from   worker/event_worker.rs
-* Import event_queue               from   worker/event_worker.rs
+* Import getAssetSymbol()          from   state/asset.rs
+* Import priceUpdate()             from   worker/event_worker.rs
+* Import eventQueue                from   worker/event_worker.rs
 
 
 
-    function start_bookticker_stream(event_queue)
+    function startBooktickerStream(eventQueue)
 
 
-        symbol = get_asset_symbol()
-        stream_url = build_bookticker_ws_url(symbol)
+        symbol = getAssetSymbol()
+        streamUrl = buildBooktickerWsUrl(symbol)
 
-        ws = websocket_connect(stream_url)
+        ws = websocketConnect(streamUrl)
 
         while true
-                raw_message = ws.read_message()
+                rawMessage = ws.readMessage()
 
-                Si raw_message == null, continuar
+                Si rawMessage == null, continuar
 
-                parsed_message = parse_json(raw_message)
+                parsedMessage = parseJson(rawMessage)
 
-                Si parsed_message es inválido, continuar
+                Si parsedMessage es inválido, continuar
 
-                new_best_bid = extract_best_bid(parsed_message)
+                newBestBid = extractBestBid(parsedMessage)
 
-                Si new_best_bid == null, continuar
+                Si newBestBid == null, continuar
 
-                event = PriceUpdate(new_best_bid)
+                event = priceUpdate(newBestBid)
 
-                event_queue.push(event)
+                eventQueue.push(event)
 
 -------------------------------------------------------------------------------
