@@ -1,0 +1,1 @@
+En este state se inicializa la variable last_bid_price como null

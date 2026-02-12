@@ -1,0 +1,1 @@
+En este state se define la criptomoneda a operar
