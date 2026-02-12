@@ -1,32 +1,19 @@
-Objetivo del `asset state`:
+Estructura del objeto en RAM:
 
-- Definir la criptomoneda/par a operar.
-- Exponer una forma consistente de leer el símbolo desde otros módulos.
-- Permitir cambios controlados del activo configurado.
+{
+    "asset":"ACTUSDT",
+    "cantidad de tokens por bloque":1000,
+    "numero de bloques": 4,
+    "ticks entre ordenes": 1,
+    "ticks arriba del precio de compra (para poner la orden de venta)": 2
+    "Ticks permitidos de caida antes de reformar el precio de compra y de venta": 6
+}
 
-------------------------------------------------------
+-------------------------------------------------------
+Métodos
 
-Pseudocódigo (`asset`):
 
-    state AssetState:
-        asset_symbol = "BTCUSDT"   # valor por defecto
+    function getAsset():
+        return asset
 
-    function get_asset_symbol():
-        return asset_symbol
-
-    function set_asset_symbol(new_symbol):
-        if new_symbol == null:
-            return
-
-        if new_symbol == "":
-            return
-
-        # Normalizar para mantener formato consistente
-        asset_symbol = to_uppercase(trim(new_symbol))
-
-------------------------------------------------------
-
-Reglas de uso:
-
-- `bookticker_stream` debe usar `get_asset_symbol()` para construir la URL del WebSocket.
-- No se debe hardcodear el símbolo en el stream ni en el worker.
+-------------------------------------------------------
