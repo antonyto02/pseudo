@@ -15,8 +15,5 @@ Estructura del objeto en RAM:
 Métodos
 
 
-    function getAsset():
-        return asset
-
 -------------------------------------------------------
 

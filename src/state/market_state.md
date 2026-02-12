@@ -15,4 +15,5 @@ Métodos
         if new_best_bid == null:
             return
         last_bid_price = new_best_bid
+        
 -------------------------------------------------------
