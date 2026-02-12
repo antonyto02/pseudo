@@ -1,29 +1,29 @@
-# Orders structure initialization (easy pseudocode)
+# Inicialización de estructura de órdenes (pseudocódigo fácil)
 
-This file explains, step by step, how to build the in-memory structure for one trading pair.
-The goal is to make clear **what each field means** before real implementation.
+Este archivo explica, paso a paso, cómo crear la estructura en memoria para un par.
+La idea es entender **qué significa cada campo** antes de implementarlo en código real.
 
 ```pseudo
-step 1) read pair global config
+paso 1) leer la configuración global del par
 
 pair_config = {
   pair_id: "adausdt",
 
-  # how many ticks between one buy order and the next buy order
+  # cuántos ticks de distancia hay entre una orden de compra y la siguiente
   tick_spacing: 5,
 
-  # maximum number of active buy orders allowed for this pair
+  # número máximo de órdenes de compra activas para este par
   max_orders: 4,
 
-  # when a buy is filled, sell price is created this many ticks above buy price
+  # cuando se llena una compra, la venta se calcula con estos ticks por encima
   sell_offset_ticks: 8,
 
-  # token amount used in each single order
+  # cantidad de tokens usada en cada orden
   tokens_per_order: 25
 }
 
 
-step 2) read current market prices
+paso 2) leer precios actuales del mercado
 
 market = {
   bid_price: 0.1500,
@@ -31,7 +31,7 @@ market = {
 }
 
 
-step 3) initialize runtime state for this pair block
+paso 3) inicializar el estado de órdenes para este bloque
 
 orders_state = {
   block_id: "b2",
@@ -52,17 +52,17 @@ orders_state = {
 }
 
 
-step 4) expected behavior after initialization
+paso 4) comportamiento esperado al iniciar
 
-- buy_order_ids and sell_order_ids start empty
-- filled_buy and filled_sell start in 0
-- every new buy order should use config.tokens_per_order
-- buy ladder distance should respect config.tick_spacing
-- buy count must not exceed config.max_orders
-- when one buy fills, create sell price using config.sell_offset_ticks above the buy fill price
+- buy_order_ids y sell_order_ids comienzan vacíos
+- filled_buy y filled_sell comienzan en 0
+- cada nueva compra debe usar config.tokens_per_order
+- la separación entre compras debe respetar config.tick_spacing
+- la cantidad de compras activas no debe superar config.max_orders
+- al llenarse una compra, el precio de venta se calcula con config.sell_offset_ticks por encima del precio de llenado
 ```
 
-## Example structure (json-like)
+## Ejemplo de estructura (json-like)
 
 ```json
 {
