@@ -1,51 +1,50 @@
-Objetivo del módulo `bookticker_stream`:
+*Algoritmo:*
 
-- Suscribirse al WebSocket `bookticker` del activo definido en `state/asset.rs`.
-- Escuchar eventos continuamente.
-- Filtrar/limpiar el payload y extraer solo `best_bid`.
-- Crear `PriceUpdate(new_best_bid)`.
-- Enviar el evento al worker por la cola.
+En este archivo se define la función llamada startBooktickerStream() la cual recibe como parámetro una variable llamada eventQueue. El propósito de esta función es suscribirse al WebSocket bookticker de Binance para el activo configurado, leyendo la URL base desde variables de entorno. Para spot se usa BINANCE_WS_BASE_URL y para futures se usa BINANCE_FUTURES_WS_BASE_URL. Luego escucha mensajes en bucle continuo, limpia y valida el payload entrante para extraer únicamente el newBestBid, y construye el evento priceUpdate(newBestBid) para enviarlo a la cola compartida del worker. Si el mensaje llega vacío, inválido o sin best bid, se ignora y el stream continúa sin interrumpirse.
 
-------------------------------------------------------
+Variables de entorno de Binance:
+- BINANCE_REST_BASE_URL=https://demo-api.binance.com/api
+- BINANCE_WS_BASE_URL=wss://demo-stream.binance.com/ws
+- BINANCE_FUTURES_REST_BASE_URL=https://demo-fapi.binance.com
+- BINANCE_FUTURES_WS_BASE_URL=wss://demo-fstream.binance.com
 
-Importaciones:
 
-* get_asset_symbol() se ubica en state/asset.rs
-* PriceUpdate(new_best_bid) se ubica en worker/event_worker.rs (tipo de evento)
-* event_queue (cola compartida con el worker)
 
-------------------------------------------------------
+-------------------------------------------------------------------------------
+* Import getAssetSymbol()          from   state/asset.rs
+* Import priceUpdate()             from   worker/event_worker.rs
+* Import eventQueue                from   worker/event_worker.rs
 
-    function start_bookticker_stream(event_queue):
 
-        symbol = get_asset_symbol()
-        stream_url = build_bookticker_ws_url(symbol)
 
-        ws = websocket_connect(stream_url)
+    function startBooktickerStream(eventQueue)
 
-        while true:
-            raw_message = ws.read_message()
 
-            if raw_message == null:
-                continue
+        symbol = getAssetSymbol()
 
-            parsed_message = parse_json(raw_message)
+        wsBaseUrl = getEnv("BINANCE_WS_BASE_URL")
+        futuresWsBaseUrl = getEnv("BINANCE_FUTURES_WS_BASE_URL")
 
-            if parsed_message is invalid:
-                continue
+        baseUrl = selectWsBaseUrl(wsBaseUrl, futuresWsBaseUrl)
+        streamUrl = buildBooktickerWsUrl(baseUrl, symbol)
 
-            new_best_bid = extract_best_bid(parsed_message)
+        ws = websocketConnect(streamUrl)
 
-            if new_best_bid == null:
-                continue
+        while true
+                rawMessage = ws.readMessage()
 
-            event = PriceUpdate(new_best_bid)
+                Si rawMessage == null, continuar
 
-            event_queue.push(event)
+                parsedMessage = parseJson(rawMessage)
 
-------------------------------------------------------
+                Si parsedMessage es inválido, continuar
 
-Notas de comportamiento:
+                newBestBid = extractBestBid(parsedMessage)
 
-- El stream no decide si el precio sube o baja; solo publica `PriceUpdate`.
-- La lógica de análisis ocurre en el worker/analyzer.
+                Si newBestBid == null, continuar
+
+                event = priceUpdate(newBestBid)
+
+                eventQueue.push(event)
+
+-------------------------------------------------------------------------------
