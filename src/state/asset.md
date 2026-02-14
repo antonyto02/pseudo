@@ -17,4 +17,8 @@ Métodos
     function getAsset():
         return asset
 
+
+    function getBlockCount():
+        return asset.blockCount
+
 -------------------------------------------------------
