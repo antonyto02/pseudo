@@ -3,7 +3,7 @@ Este archivo arranca el bot
 2.- Abre el stream User Data
 3.- Abre el stream BookTicker
 
-
+buidOrderBlocks()
 syncOrders()
 startUserDaraStream()
 startBooktickerStream()
