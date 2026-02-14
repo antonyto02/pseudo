@@ -20,7 +20,6 @@ Si continúa, limpia/cancela las órdenes fuera de rango y luego rellena huecos.
         orderBook = getOrderBookSpot()
 
         bestBids = orderBook.bestBids
-        bestAsks = orderBook.bestAsks
 
         targetBuyPrices = findBuyLevels(bestBids)
 
@@ -30,7 +29,7 @@ Si continúa, limpia/cancela las órdenes fuera de rango y luego rellena huecos.
             return
 
         cleanOutOfRangeBuyOrders(targetBuyPrices)
-        fillMissingBuyOrders(targetBuyPrices, bestAsks)
+        fillMissingBuyOrders(targetBuyPrices)
 
         // continua con los siguientes pasos de sync
 
