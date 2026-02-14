@@ -32,4 +32,8 @@ Métodos
 
         orderBlocks <- blocks
 
+
+    function getOrderBlocks():
+        return orderBlocks
+
 -------------------------------------------------------
