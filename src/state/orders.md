@@ -44,6 +44,10 @@ Métodos
         }
 
 
+    function setOrderBlock(index, blockData):
+        orderBlocks[index] <- blockData
+
+
     function getOrderBlocks():
         return orderBlocks
 

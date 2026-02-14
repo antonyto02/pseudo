@@ -4,7 +4,7 @@ syncOrders es el orquestador.
 Solo llama funciones atómicas para traer datos y preparar los datos de sincronización.
 Primero consulta order book spot (10 bids y 10 asks), luego calcula en qué precios deben estar las órdenes de compra.
 Después valida si debe continuar o terminar el flujo.
-Si continúa, limpia/cancela las órdenes fuera de rango.
+Si continúa, limpia/cancela las órdenes fuera de rango y luego rellena huecos.
 
 
 -------------------------------------------------------------------------------
@@ -12,6 +12,7 @@ Si continúa, limpia/cancela las órdenes fuera de rango.
 * Import findBuyLevels()               from   orders/syncOrders/buy_levels.rs
 * Import shouldContinueSync()          from   orders/syncOrders/should_continue.rs
 * Import cleanOutOfRangeBuyOrders()    from   orders/syncOrders/clean_out_of_range.rs
+* Import fillMissingBuyOrders()        from   orders/syncOrders/fill_gaps.rs
 
 
     function syncOrders()
@@ -19,6 +20,7 @@ Si continúa, limpia/cancela las órdenes fuera de rango.
         orderBook = getOrderBookSpot()
 
         bestBids = orderBook.bestBids
+        bestAsks = orderBook.bestAsks
 
         targetBuyPrices = findBuyLevels(bestBids)
 
@@ -28,6 +30,7 @@ Si continúa, limpia/cancela las órdenes fuera de rango.
             return
 
         cleanOutOfRangeBuyOrders(targetBuyPrices)
+        fillMissingBuyOrders(targetBuyPrices, bestAsks)
 
         // continua con los siguientes pasos de sync
 
