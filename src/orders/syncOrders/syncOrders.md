@@ -1,13 +1,13 @@
 *Algoritmo:*
 
 syncOrders es el orquestador.
-Solo llama funciones atómicas para traer datos y sincronizar RAM.
-Primero consulta order book spot (10 bids y 10 asks), luego actualiza bloques en memoria.
+Solo llama funciones atómicas para traer datos y preparar los datos de sincronización.
+Primero consulta order book spot (10 bids y 10 asks), luego calcula en qué precios deben estar las órdenes de compra.
 
 
 -------------------------------------------------------------------------------
 * Import getOrderBookSpot()        from   spot/api/get_orderbook.rs
-* Import applyOrderBookSnapshot()  from   state/orders.rs
+* Import findBuyLevels()           from   orders/syncOrders/buy_levels.rs
 
 
     function syncOrders()
@@ -17,6 +17,6 @@ Primero consulta order book spot (10 bids y 10 asks), luego actualiza bloques en
         bestBids = orderBook.bestBids
         bestAsks = orderBook.bestAsks
 
-        applyOrderBookSnapshot(bestBids, bestAsks)
+        targetBuyPrices = findBuyLevels(bestBids)
 
 -------------------------------------------------------------------------------
