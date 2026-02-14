@@ -2,15 +2,20 @@
 
 Convierte ticks enteros a precio string con decimales fijos.
 No usa números decimales para cálculos.
+Los decimales se leen desde state/asset.
 
 Ejemplo:
 ticks = 152
-decimals = 4
+decimals(state) = 4
 resultado = "0.0152"
 
 -------------------------------------------------------------------------------
+* Import getDecimals()                from   state/asset.rs
 
-    function ticksToPriceString(ticks, decimals)
+
+    function ticksToPriceString(ticks)
+
+        decimals = getDecimals()
 
         raw = toString(ticks)
 
