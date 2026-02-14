@@ -1,7 +1,7 @@
 *Algoritmo:*
 
 Esta función determina los precios donde deben estar las órdenes de compra.
-Recibe bestBids como argumento.
+Recibe bestBids como argumento en ticks enteros.
 Toma el primer best bid como precio base para el bloque 1.
 Luego, según `orderTickGap` y `blockCount`, arma la lista de n precios objetivo.
 
@@ -17,7 +17,7 @@ Luego, según `orderTickGap` y `blockCount`, arma la lista de n precios objetivo
         n = getBlockCount()
         gap = asset.orderTickGap
 
-        basePrice = bestBids[0].price
+        basePrice = bestBids[0]
 
         buyLevels = []
 
