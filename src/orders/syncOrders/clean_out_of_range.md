@@ -2,7 +2,8 @@
 
 Esta función limpia órdenes de compra que quedaron fuera de targetBuyPrices.
 Recorre bloque por bloque.
-Si bid_price es null, ignora.
+Convierte bid_price (string) a ticks para comparar contra targetBuyPrices (enteros).
+Si bid_price es null o vacío, ignora.
 Si bid_price existe en targetBuyPrices, ignora.
 Si bid_price no existe en targetBuyPrices, cancela en Binance y luego limpia el bloque en RAM.
 No retorna nada.
@@ -12,6 +13,7 @@ No retorna nada.
 * Import getOrderBlocks()              from   state/orders.rs
 * Import resetOrderBlock()             from   state/orders.rs
 * Import cancelSpotBuyOrders()         from   spot/api/cancel_buy_orders.rs
+* Import priceStringToTicks()          from   price/conversion/string_to_ticks.rs
 
 
     function cleanOutOfRangeBuyOrders(targetBuyPrices)
@@ -25,7 +27,12 @@ No retorna nada.
             if block.bid_price == null:
                 continue
 
-            if targetBuyPrices includes block.bid_price:
+            if block.bid_price == "":
+                continue
+
+            bidTicks = priceStringToTicks(block.bid_price)
+
+            if targetBuyPrices includes bidTicks:
                 continue
 
             cancelOk = cancelSpotBuyOrders(block.buy_order_ids)

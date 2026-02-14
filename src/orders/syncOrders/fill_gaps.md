@@ -3,6 +3,7 @@
 Esta función rellena huecos en órdenes buy.
 Recorre targetBuyPrices y, cuando falta un precio en RAM, crea la orden en Binance Spot.
 Si Binance responde ok, calcula sellPrice con orderbook y asigna la compra al primer bloque null.
+Para validar existencia en RAM, convierte bid_price (string) a ticks antes de comparar.
 No retorna nada.
 
 
@@ -12,6 +13,7 @@ No retorna nada.
 * Import placeSpotLimitBuy()           from   spot/api/place_limit_buy.rs
 * Import findSellPriceFromBook()       from   orders/syncOrders/sell_price_from_book.rs
 * Import assignBuyToFirstEmptyBlock()  from   orders/syncOrders/assign_buy_block.rs
+* Import priceStringToTicks()          from   price/conversion/string_to_ticks.rs
 
 
     function fillMissingBuyOrders(targetBuyPrices, bestAsks)
@@ -27,7 +29,16 @@ No retorna nada.
             existsInRam = false
 
             for each block in orderBlocks:
-                if block.bid_price == targetPrice:
+
+                if block.bid_price == null:
+                    continue
+
+                if block.bid_price == "":
+                    continue
+
+                bidTicks = priceStringToTicks(block.bid_price)
+
+                if bidTicks == targetPrice:
                     existsInRam = true
                     break
 
