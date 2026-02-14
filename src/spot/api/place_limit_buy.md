@@ -1,7 +1,7 @@
 *Algoritmo:*
 
 Esta función crea una orden LIMIT BUY en Binance Spot.
-Recibe price y qty.
+Recibe price string (formato Binance) y qty.
 Retorna ok + orderId + executedPrice para que el flujo pueda actualizar RAM.
 
 
