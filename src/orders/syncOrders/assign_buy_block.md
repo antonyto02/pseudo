@@ -2,7 +2,7 @@
 
 Esta función asigna una compra al primer bloque vacío en RAM.
 Busca el primer block con bid_price == null y guarda todos los campos.
-Nota: en orders, bid_price, ask_price, ids y filleds se guardan como string.
+Nota: en orders, bid_price, ask_price, ids, filleds y estado short se guardan como string.
 No retorna nada.
 
 
@@ -28,7 +28,9 @@ No retorna nada.
                 "buy_order_ids": [toString(buyOrderId)],
                 "sell_order_ids": [],
                 "filled_buy": "0.0",
-                "filled_sell": "0.0"
+                "filled_sell": "0.0",
+                "has_open_short": "false",
+                "short_size": "0.0"
             }
 
             setOrderBlock(i, newBlock)
