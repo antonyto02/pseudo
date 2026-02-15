@@ -7,6 +7,8 @@ Nota: en orders, todos los campos se manejan como string.
 - sell_order_ids: lista de strings
 - filled_buy: string
 - filled_sell: string
+- has_open_short: string ("true" o "false")
+- short_size: string
 
 {
   "bid_price": null,
@@ -14,7 +16,9 @@ Nota: en orders, todos los campos se manejan como string.
   "buy_order_ids": [],
   "sell_order_ids": [],
   "filled_buy": "0.0",
-  "filled_sell": "0.0"
+  "filled_sell": "0.0",
+  "has_open_short": "false",
+  "short_size": "0.0"
 }
 
 
@@ -33,7 +37,9 @@ Métodos
                 "buy_order_ids": [],
                 "sell_order_ids": [],
                 "filled_buy": "0.0",
-                "filled_sell": "0.0"
+                "filled_sell": "0.0",
+                "has_open_short": "false",
+                "short_size": "0.0"
             }
 
             agregar block a blocks
@@ -48,7 +54,9 @@ Métodos
             "buy_order_ids": [],
             "sell_order_ids": [],
             "filled_buy": "0.0",
-            "filled_sell": "0.0"
+            "filled_sell": "0.0",
+            "has_open_short": "false",
+            "short_size": "0.0"
         }
 
 
