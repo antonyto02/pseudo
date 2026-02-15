@@ -6,14 +6,14 @@ Objetivo del `event_worker`:
 
 Nota:
 
-- Actualmente existen `PriceUpdate(new_best_bid)` y `ExecutionReport(payload)`.
+- Actualmente existen `PriceUpdate(new_best_bid_ticks)` y `ExecutionReport(payload)`.
 - Más adelante se pueden agregar otros tipos de eventos.
 
 ------------------------------------------------------
 
 Importaciones:
 
-* analyze_price_update(new_best_bid) se ubica en price/price_analyzer.rs
+* analyze_price_update(new_best_bid_ticks) se ubica en price/price_analyzer.rs
 * handle_execution_report(payload) se ubica en worker/handlers/execution_report.rs
 * event_queue (cola desde donde se consumen eventos)
 
@@ -22,7 +22,7 @@ Importaciones:
 Definición de eventos (actual):
 
     enum Event:
-        PriceUpdate(new_best_bid)
+        PriceUpdate(new_best_bid_ticks)
         ExecutionReport(payload)
 
     # Futuro:
@@ -41,8 +41,8 @@ Definición de eventos (actual):
             switch event.type:
 
                 case PriceUpdate:
-                    new_best_bid = event.new_best_bid
-                    analyze_price_update(new_best_bid)
+                    new_best_bid_ticks = event.new_best_bid_ticks
+                    analyze_price_update(new_best_bid_ticks)
 
                 case ExecutionReport:
                     payload = event.payload
@@ -59,5 +59,5 @@ Notas de diseño:
 
 - El worker centraliza el ruteo de eventos.
 - Cada nuevo tipo de evento debe agregar un nuevo `case`.
-- `PriceUpdate` mantiene el flujo hacia `price_analyzer`.
+- `PriceUpdate` mantiene el flujo hacia `price_analyzer` usando ticks enteros.
 - `ExecutionReport` entra por `user_data_stream` y se maneja de forma secuencial.

@@ -1,23 +1,24 @@
 *Algoritmo:*
 
-En este archivo se define la función shortOpenAnalyzer(new_best_bid).
+En este archivo se define la función shortOpenAnalyzer(new_best_bid_ticks).
 La función recorre los bloques de órdenes en RAM y abre short cuando:
 1) el bloque no tiene short abierto (`has_open_short == "false"`), y
-2) `new_best_bid` es menor al `bid_price` del bloque.
+2) `new_best_bid_ticks` es menor al `bid_price` del bloque convertido a ticks.
 
 Si se cumple, calcula la cantidad a abrir en x1 como:
 `qtyPerBlock - filled_sell`.
-Luego llama a openShort(qty). Si Binance responde ok, marca el bloque con short abierto y guarda el tamaño en `short_size`.
+Luego llama a openShort(qty). Si Binance responde ok, marca el bloque con short abierto y guarda el tamaño en `short_size` (string).
 
 
 -------------------------------------------------------------------------------
-* Import getOrderBlocks()   from   state/orders.rs
-* Import setOrderBlock()    from   state/orders.rs
-* Import getAsset()         from   state/asset.rs
-* Import openShort()        from   binance/futures/api/open_short.rs
+* Import getOrderBlocks()        from   state/orders.rs
+* Import setOrderBlock()         from   state/orders.rs
+* Import getAsset()              from   state/asset.rs
+* Import openShort()             from   binance/futures/api/open_short.rs
+* Import priceStringToTicks()    from   price/conversion/string_to_ticks.rs
 
 
-    function shortOpenAnalyzer(new_best_bid)
+    function shortOpenAnalyzer(new_best_bid_ticks)
 
         asset = getAsset()
         orderBlocks = getOrderBlocks()
@@ -35,10 +36,12 @@ Luego llama a openShort(qty). Si Binance responde ok, marca el bloque con short 
             if block.bid_price == "":
                 continue
 
-            if new_best_bid >= block.bid_price:
+            bid_price_ticks = priceStringToTicks(block.bid_price)
+
+            if new_best_bid_ticks >= bid_price_ticks:
                 continue
 
-            shortQty = asset.qtyPerBlock - block.filled_sell
+            shortQty = toNumber(asset.qtyPerBlock) - toNumber(block.filled_sell)
 
             if shortQty <= 0:
                 continue
