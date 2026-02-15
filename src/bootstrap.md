@@ -3,7 +3,17 @@ Este archivo arranca el bot
 2.- Abre el stream User Data
 3.- Abre el stream BookTicker
 
-buidOrderBlocks()
+-------------------------------------------------------
+Importaciones:
+
+* Import createOrderBlocks()      from state/orders.rs
+* Import syncOrders()             from orders/syncOrders/syncOrders.rs
+* Import startUserDaraStream()    from streams/user_data_stream.rs
+* Import startBooktickerStream()  from streams/bookticker_stream.rs
+
+-------------------------------------------------------
+
+createOrderBlocks()
 syncOrders()
 startUserDaraStream()
 startBooktickerStream()

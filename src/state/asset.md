@@ -6,7 +6,8 @@ Estructura del objeto en RAM:
     "blockCount": 4,
     "orderTickGap": 1,
     "sellTickOffset": 2,
-    "maxDropTicks": 6
+    "maxDropTicks": 6,
+    "decimals": 4
 }
 
 
@@ -16,5 +17,13 @@ Métodos
 
     function getAsset():
         return asset
+
+
+    function getBlockCount():
+        return asset.blockCount
+
+
+    function getDecimals():
+        return asset.decimals
 
 -------------------------------------------------------
