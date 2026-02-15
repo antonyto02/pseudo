@@ -18,7 +18,7 @@ En este archivo se define la función llamada analyzePriceUpdate() la cual recib
 
         Si last_bid_price != null 
                 Si new_best_bid > last_bid_price, entonces handle_price_up()
-                Si new_best_bid < last_bid_price, entonces handle_price_down()
+                Si new_best_bid < last_bid_price, entonces handle_price_down(new_best_bid)
 
         updateLastBidPrice(new_best_bid)
 
